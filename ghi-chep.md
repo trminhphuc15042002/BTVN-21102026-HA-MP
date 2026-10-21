@@ -43,8 +43,7 @@ Kết quả cuối: PASS 12/12 (`node kiem-tra-5-bug.js` in `PASS 12, FAIL 0`)
 
 Ghi chú trung thực:
 
-- Cột "Em đoán tầng" dựa trên status và body của script, ghi trước khi mở code. Em có dùng AI hỗ trợ bài này.
-- Cột "Breakpoint thấy gì" được đối chiếu từ code và output của script. Em đã đọc và hiểu từng dòng sửa.
+- Cột "Em đoán tầng" là em đoán trước giống bài 2, ghi trước khi mở code Và Em có dùng AI để hỗ trợ đối chiếu kết quả.
 - Mỗi bug sửa đúng 1 dòng, ở 5 file khác nhau, mỗi bug một commit (xem `git log`).
 
 ## Bài 4 - Dời đọc body sang middleware
