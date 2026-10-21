@@ -33,13 +33,19 @@ Cột "Em đoán tầng" ghi trước khi mở code.
 
 | Bước FAIL | Em đoán tầng | Tầng thật | file:dòng | Dòng cũ -> dòng mới | Breakpoint thấy gì |
 |---|---|---|---|---|---|
-| 2 | | | | | |
-| 5 | | | | | |
-| 7 | | | | | |
-| 10 | | | | | |
-| 11 | | | | | |
+| 2 | Repository | Controller | `server/controllers/product-controller.js:16` | `findById(params.id)` -> `findById(Number(params.id))` | `params.id` là string `"1"` (lấy từ URL), còn `p.id` trong file là number `1`, nên `p.id === id` ở `product-repository.js:10` luôn false. Repository không có lỗi, lỗi ở chỗ lấy id từ URL, việc của Controller |
+| 5 | Middleware | Middleware | `server/middlewares/require-token.js:6` | `if (!req.headers.authorization)` -> `if (req.headers.authorization !== \`Bearer ${DEMO_TOKEN}\`)` | Điều kiện chỉ kiểm có header hay không, token sai vẫn có header nên đi tiếp vào controller và trả 201. `DEMO_TOKEN` khai báo ở dòng 3 nhưng không được dùng |
+| 7 | DataSource | DataSource | `server/data-sources/file-data-source.js:11` | `JSON.stringify(data.products, null, 2)` -> `JSON.stringify(data, null, 2)` | `load()` trả `{ products, nextId }` nhưng `save()` chỉ ghi mảng `products` xuống file, nên lần đọc sau `const { products } = ...` ra `undefined` và list trả body rỗng |
+| 10 | Middleware | Router | `server/router.js:12` | `middlewares: []` -> `middlewares: [requireToken]` | Route DELETE khai báo danh sách middleware rỗng, trong khi POST, PUT, PATCH đều có `[requireToken]`. Vòng lặp middleware ở `router.js:41` không có gì để chạy nên request đi thẳng vào `remove`. Không dừng ở `require-token.js:6` |
+| 11 | Repository | Repository | `server/repositories/product-repository.js:43` | `splice(index)` -> `splice(index, 1)` | `splice(index)` xoá từ vị trí `index` tới hết mảng. Xoá product 2 (index 1) làm `data.products` còn 1 phần tử thay vì 2, mất cả product 3 |
 
-Kết quả cuối: PASS .../12
+Kết quả cuối: PASS 12/12 (`node kiem-tra-5-bug.js` in `PASS 12, FAIL 0`)
+
+Ghi chú trung thực:
+
+- Cột "Em đoán tầng" được ghi chỉ dựa trên status và body của script, trước khi mở code. Việc này do AI làm, không phải đoán tay của em.
+- Cột "Breakpoint thấy gì" được suy ra bằng cách đọc code và đối chiếu output của script, chưa đặt breakpoint thật trong VS Code. Em cần tự đặt breakpoint ở các dòng trên để xác nhận lại trước khi nộp.
+- Mỗi bug sửa đúng 1 dòng, ở 5 file khác nhau, mỗi bug một commit (xem `git log`).
 
 ## Bài 4 - Dời đọc body sang middleware
 
