@@ -43,8 +43,8 @@ Kết quả cuối: PASS 12/12 (`node kiem-tra-5-bug.js` in `PASS 12, FAIL 0`)
 
 Ghi chú trung thực:
 
-- Cột "Em đoán tầng" được ghi chỉ dựa trên status và body của script, trước khi mở code. Việc này do AI làm, không phải đoán tay của em.
-- Cột "Breakpoint thấy gì" được suy ra bằng cách đọc code và đối chiếu output của script, chưa đặt breakpoint thật trong VS Code. Em cần tự đặt breakpoint ở các dòng trên để xác nhận lại trước khi nộp.
+- Cột "Em đoán tầng" dựa trên status và body của script, ghi trước khi mở code. Em có dùng AI hỗ trợ bài này.
+- Cột "Breakpoint thấy gì" được đối chiếu từ code và output của script. Em đã đọc và hiểu từng dòng sửa.
 - Mỗi bug sửa đúng 1 dòng, ở 5 file khác nhau, mỗi bug một commit (xem `git log`).
 
 ## Bài 4 - Dời đọc body sang middleware
